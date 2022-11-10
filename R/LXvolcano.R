@@ -22,9 +22,9 @@ LXvolcano <- function (gene_data,Gene_FC,meta_data,Meta_FC,group1,group2){
 
 
   conflict_scout()
-  
+
   conflict_prefer("%+%", "psych")
-  
+
   conflict_prefer("filter", "dplyr")
   conflict_prefer("lag", "dplyr")
   conflict_prefer("arrange", "dplyr")
@@ -40,11 +40,10 @@ LXvolcano <- function (gene_data,Gene_FC,meta_data,Meta_FC,group1,group2){
   conflict_prefer("desc", "dplyr")
   conflict_prefer("collapse", "dplyr")
   conflict_prefer("slice", "dplyr")
-  
+
   conflict_prefer("Position", "ggplot2")
-  
-  
-  
+
+
 #----- Gene volcano function----------------
 
   gene_volcano <- function(data_file) {
@@ -140,12 +139,12 @@ LXvolcano <- function (gene_data,Gene_FC,meta_data,Meta_FC,group1,group2){
 
     mytheme<-theme_bw()+
       theme(text=element_text(family = "sans",colour ="black",face="bold",size =14),
-            panel.border = element_rect(size = 0.8,colour = "gray30"),
+            #panel.border = element_rect (linewidth = 0.8,color = "gray30"),
             axis.line = element_blank(),
-            axis.ticks = element_line(size = 0.6,colour = "gray30"),
+            axis.ticks = element_line(linewidth = 0.6,colour = "gray30"),
             axis.ticks.length = unit(1.5,units = "mm"))+
       theme(plot.title = element_text(hjust = 0.5))+
-      theme(plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm"))
+      theme(plot.margin = unit(c(0.5, 0.5, 0.5, 0.5),"cm"))
 
     xytheme <-theme(axis.text.x = element_text(face="bold",color="black",size=12,angle =0,hjust=1))+
       theme(axis.text.y = element_text(face="bold",color="black",size=12))+
@@ -158,6 +157,8 @@ LXvolcano <- function (gene_data,Gene_FC,meta_data,Meta_FC,group1,group2){
       geom_vline(xintercept = c(-1,1),linetype="dashed",color="#808080")+
       labs(x="log2 (Fold Change)",y="-log10(p value)",title = title_gene) +
       mytheme+xytheme
+
+    p1
 
     data01 <- data
 
@@ -189,17 +190,16 @@ LXvolcano <- function (gene_data,Gene_FC,meta_data,Meta_FC,group1,group2){
 
     data$log2FoldChange <- abs(data$log2FC)
 
-    
-    label01=paste("       ��",Down)
-    label02=paste("          ��",No)
-    label03=paste("��",UP)
+
+    label01=paste("       *",Down)
+    label02=paste("          *",No)
+    label03=paste("*",UP)
 
     label_all <- paste(label01,"\n", label02,"\n",label03)
 
 
     mytheme3<-theme_bw()+
       theme(text=element_text(family = "sans",colour ="black",face="bold",size =14),
-            panel.border = element_rect(size = 0.8,colour = "gray30"),
             axis.line = element_blank(),
             axis.ticks = element_line(size = 0.6,colour = "gray30"),
             axis.ticks.length = unit(1.5,units = "mm"))+
@@ -213,7 +213,7 @@ LXvolcano <- function (gene_data,Gene_FC,meta_data,Meta_FC,group1,group2){
 
     # ------------------------------
     tag_theme3 <- theme(plot.tag = element_text(size =15,colour = "black"),
-                        plot.tag.position = c(1.10,0.83)) 
+                        plot.tag.position = c(1.10,0.83))
 
     p3 <- ggplot(data,aes(x=log2FC,y=-log10(pvalue)))+
       geom_point(aes(color=-log10(pvalue),size=log2FoldChange))+
@@ -224,17 +224,17 @@ LXvolcano <- function (gene_data,Gene_FC,meta_data,Meta_FC,group1,group2){
       geom_vline(xintercept = c(-1.2,1.2),linetype="dashed",color="#808080")+
       labs(x="log2 (Fold Change)",y="-log10(p value)",title = title_gene,tag =label_all)+
       mytheme3+xytheme3+tag_theme3
-    #annotate("text",x=-Inf,y=Inf,hjust=-0.1,vjust=2,label=paste("�?",Down),family="serif",size=4,colour="#006400")+
-    #annotate("text",x=-Inf,y=Inf,hjust=-0.1,vjust=4,label=paste("�?",No),family="serif",size=4,colour="#006400")+
-    #annotate("text",x=-Inf,y=Inf,hjust=-0.15,vjust=6,label=paste("�?",UP),family="serif",size=4,colour="#006400")
+    #annotate("text",x=-Inf,y=Inf,hjust=-0.1,vjust=2,label=paste("???",Down),family="serif",size=4,colour="#006400")+
+    #annotate("text",x=-Inf,y=Inf,hjust=-0.1,vjust=4,label=paste("???",No),family="serif",size=4,colour="#006400")+
+    #annotate("text",x=-Inf,y=Inf,hjust=-0.15,vjust=6,label=paste("???",UP),family="serif",size=4,colour="#006400")
 
-    #p3
+    p3
 
     p4 <- p3+
       geom_label_repel(data=df_show,aes(x=log2FC,y=-log10(pvalue), label=ID),#只显示绝对值log2FC>=1的ID
                        label.size =0.1,size=2, box.padding = 0.4, max.overlaps =show_n)
 
-    #p4
+    p4
 
     if(dir.exists("analysis result")==FALSE)
       dir.create("analysis result")
@@ -318,7 +318,6 @@ LXvolcano <- function (gene_data,Gene_FC,meta_data,Meta_FC,group1,group2){
 
     mytheme<-theme_bw()+
       theme(text=element_text(family = "sans",colour ="black",face="bold",size =14),
-            panel.border = element_rect(size = 0.8,colour = "gray30"),
             axis.line = element_blank(),
             axis.ticks = element_line(size = 0.6,colour = "gray30"),
             axis.ticks.length = unit(1.5,units = "mm"))+
@@ -329,7 +328,7 @@ LXvolcano <- function (gene_data,Gene_FC,meta_data,Meta_FC,group1,group2){
       theme(axis.text.y = element_text(face="bold",color="black",size=12))+
       theme(legend.text=element_text(face="bold",color="black",size=12))
 
-    # 指定图外，文字大小，颜色，以及位�?
+    # 指定图外，文字大小，颜色，以及位???
     tag_theme <- theme(plot.tag = element_text(size =14,colour = "blue"),
                        plot.tag.position = c(0.80,0.9)) #图形大小：长和高均为1
 
@@ -371,27 +370,26 @@ LXvolcano <- function (gene_data,Gene_FC,meta_data,Meta_FC,group1,group2){
     data$log2FoldChange <- abs(data$log2FC)
 
     # 设定文字标签（图形之外）
-    label01=paste("     ��",Down)
-    label02=paste("      ��",No)
-    label03=paste("��",UP)
+    label01=paste("     *",Down)
+    label02=paste("      *",No)
+    label03=paste("*",UP)
 
     label_all <- paste(label01,"\n", label02,"\n",label03)
 
     mytheme03<-theme_bw()+
       theme(text=element_text(family = "sans",colour ="black",face="bold",size =14),
-            panel.border = element_rect(size = 0.8,colour = "gray30"),
             axis.line = element_blank(),
             axis.ticks = element_line(size = 0.6,colour = "gray30"),
             axis.ticks.length = unit(1.5,units = "mm"))+
       theme(plot.title = element_text(hjust = 0.5))+
-      theme(plot.margin = unit(c(0.3, 5.5, 0.5, 1.0), "cm"))#对应着 上、右、下、左 的顺�?
+      theme(plot.margin = unit(c(0.3, 5.5, 0.5, 1.0), "cm"))#对应着 上、右、下、左 的顺???
 
     xytheme03 <-theme(axis.text.x = element_text(face="bold",color="black",size=12,angle =0,hjust=1))+
       theme(axis.text.y = element_text(face="bold",color="black",size=12))+
       theme(legend.text=element_text(face="bold",color="black",size=12),
             legend.position = c(1.2,0.40))
 
-    # 指定图外，文字大小，颜色，以及位�?
+    # 指定图外，文字大小，颜色，以及位???
     tag_theme03 <- theme(plot.tag = element_text(size =15,colour = "black"),
                          plot.tag.position = c(1.10,0.83)) #图形大小：长和高均为1
 
